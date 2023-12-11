@@ -1,19 +1,20 @@
+
 import pandas as pd
 
-def filter_routes(df):
-    # Group by 'route' and calculate the average of the 'truck' column
-    route_avg_truck = df.groupby('route')['truck'].mean()
+def get_bus_indexes(df):
+    # Calculate the mean value of the 'bus' column
+    mean_bus = df['bus'].mean()
 
-    # Filter routes where the average of 'truck' values is greater than 7
-    selected_routes = route_avg_truck[route_avg_truck > 7].index.tolist()
+    # Identify indices where 'bus' values are greater than twice the mean
+    bus_indexes = df[df['bus'] > 2 * mean_bus].index.tolist()
 
-    # Sort the list of selected routes
-    selected_routes.sort()
+    # Sort the indices in ascending order
+    bus_indexes.sort()
 
-    return selected_routes
+    return bus_indexes
 
 # Example usage
 dataset_path = 'dataset-1.csv'
 df = pd.read_csv(dataset_path)
-result_list = filter_routes(df)
+result_list = get_bus_indexes(df)
 print(result_list)
