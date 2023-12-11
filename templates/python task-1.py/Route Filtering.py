@@ -1,21 +1,20 @@
 import pandas as pd
 
-def multiply_matrix(result_matrix):
-    # Create a deep copy of the input DataFrame to avoid modifying the original
-    modified_matrix = result_matrix.copy(deep=True)
+def filter_routes(df):
+    # Group by 'route' and calculate the average of the 'truck' column
+    route_avg_truck = df.groupby('route')['truck'].mean()
 
-    # Apply the multiplication logic based on the given conditions
-    modified_matrix[modified_matrix > 20] *= 0.75
-    modified_matrix[modified_matrix <= 20] *= 1.25
+    # Filter routes where the average of 'truck' values is greater than 7
+    selected_routes = route_avg_truck[route_avg_truck > 7].index.tolist()
 
-    # Round the values to 1 decimal place
-    modified_matrix = modified_matrix.round(1)
+    # Sort the list of selected routes
+    selected_routes.sort()
 
-    return modified_matrix
+    return selected_routes
 
-# Example usage (assuming result_matrix is the DataFrame from Question 1)
-# Replace this line with the actual DataFrame you have from Question 1
-result_matrix = pd.DataFrame(data={'A': [0, 25, 10], 'B': [15, 30, 5], 'C': [12, 18, 22]})
+# Example usage
+dataset_path = 'dataset-1.csv'
+df = pd.read_csv(dataset_path)
+result_list = filter_routes(df)
+print(result_list)
 
-modified_result = multiply_matrix(result_matrix)
-print(modified_result)
